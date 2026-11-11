@@ -1,0 +1,14 @@
+# Configuración local de base de datos (no se sube al repositorio)
+config.php
+
+# Entregas
+*.zip
+
+# Nota de trabajo del equipo (nunca se sube al repositorio)
+project estatus.md
+
+# Editores y sistema
+.vscode/
+.DS_Store
+Thumbs.db
+probar_conexion.php

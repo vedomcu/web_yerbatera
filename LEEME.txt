@@ -1,0 +1,120 @@
+
+TP FINAL - SISTEMA DE GESTIÓN "YERBATERA MISIONES"
+INTEGRANTES: KEVIN GONZALEZ, ISAIAS LOPEZ, VERONICA DOMINICO
+
+TEMA ELEGIDO 
+
+Sistema de gestión de una yerbatería: catálogo público de productos y panel
+de administración con ABM (alta, baja, modificación y listado) de categorías
+y productos.
+
+BASE DE DATOS
+
+Nombre de la base: yerbatera
+Archivo SQL: yerbatera.sql (exportado desde phpMyAdmin, con estructura y
+datos de ejemplo).
+
+Tablas:
+- categorias (id AUTO_INCREMENT, nombre, descripcion)
+- productos  (id AUTO_INCREMENT, categoria_id, nombre, descripcion, precio,
+               peso, unidad)  -> unidad: 'g' (gramos) o 'kg' (kilos)
+               -> relacionada con categorias por la clave foránea categoria_id
+- usuarios   (id AUTO_INCREMENT, usuario, password)
+
+3. TAREAS DISTRIBUIDAS
+
+LOPEZ ISAIAS
+
+- Diseño y desarrollo de la base de datos.
+- Implementación de tres tablas (categorías, productos y usuarios).
+- Definición de las relaciones.
+- Configuración de primary key y foreign key.
+- Definición de los campos y tipos de datos en cada tabla.
+- Carga de datos para productos de ejemplo.
+- Exportación del archivo SQL de la yerbatera.
+- Pruebas de funcionamiento de la base de datos.
+
+GONZALEZ KEVIN
+
+- Implementación de la conexión segura a la base de datos mediante PDO.
+- Desarrollo de consultas preparadas para evitar inyecciones SQL.
+- Validación de datos recibidos desde formularios.
+- Protección de contraseñas mediante el uso de password_hash() y password_verify().
+- Implementación de sesiones y protección de las páginas de administración.
+- Control de acceso de usuarios del sistema web.
+- Implementación de eliminaciones mediante POST y confirmación.
+- Configuración separada de credenciales mediante config.php.
+- Implementación del modo desarrollo y producción.
+- Configuración del archivo .gitignore para excluir datos sensibles.
+
+DOMINICO VERONICA
+
+- Desarrollo de las operaciones ABM (alta, baja y modificación) de categorías y productos.
+- Implementación de formularios para registrar y modificar información.
+- Desarrollo del catálogo de productos.
+- Implementación de los selectores de categorías en los formularios.
+- Diseño y organización de la interfaz general del sistema.
+- Desarrollo de las hojas de estilos CSS.
+- Adaptación de la interfaz para celulares.
+- Organización de cada componente visual.
+- Pruebas del funcionamiento del sistema.
+
+INSTALACIÓN
+
+1. Copiar la carpeta del proyecto dentro de C:\xampp\htdocs\
+   (por ejemplo: C:\xampp\htdocs\tp3).
+2. Iniciar Apache y MySQL desde el panel de XAMPP.
+3. Abrir http://localhost/phpmyadmin e importar el archivo yerbatera.sql
+   (pestaña "Importar"). El archivo ya crea y selecciona la base "yerbatera".
+   Nota: si ya importaste una versión anterior del archivo (sin los campos de
+   peso), agregarlos ejecutando en phpMyAdmin esta sentencia:
+   ALTER TABLE productos
+     ADD COLUMN peso DECIMAL(10,2) NULL AFTER precio,
+     ADD COLUMN unidad ENUM('g','kg') NULL AFTER peso;
+4. Revisar el archivo config.php: viene incluido en el .zip con los valores
+   por defecto de XAMPP (usuario root sin contraseña). Si tu MySQL usa otros
+   datos, cambiarlos ahí.
+   En el repositorio de GitHub solo está la plantilla config.ejemplo.php,
+   porque config.php queda fuera del repositorio (lo excluye el .gitignore).
+5. Entrar a http://localhost/tp3/ (o la carpeta que hayas elegido).
+
+USUARIO DE PRUEBA
+
+Usuario: admin
+Contraseña: admin123
+
+La contraseña ya viene guardada en el SQL con password_hash() (se verifica con
+password_verify). Opcionalmente se puede crear otro usuario entrando a
+admin.php en el navegador (ese script solo funciona en modo desarrollo).
+
+CÓMO PROBARLO (pasos para probarlo)
+------------------------------------
+1. Inicio: http://localhost/tp3/
+2. "Productos": catálogo público de productos (solo lectura).
+3. "Administración": ingresar con admin / admin123.
+4. Panel -> "Gestionar categorías": crear, editar y eliminar (con confirmación).
+5. Panel -> "Gestionar productos": crear un producto eligiendo la categoría en
+   el select, editarlo y eliminarlo (con confirmación).
+6. "Cerrar sesión" para volver al inicio.
+
+DISEÑO RESPONSIVE (Clase 25)
+-----------------------------
+La hoja de estilos css/estilos.css se adapta a tres tamaños:
+  - Escritorio: tablas tradicionales y formularios en una columna cómoda.
+  - Hasta 700 px: el encabezado y el menú se acomodan en vertical y las
+    tablas se transforman en tarjetas, mostrando el nombre de cada columna
+    al lado del dato (no hace falta desplazarse en horizontal).
+  - Hasta 480 px: los formularios, botones y acciones ocupan todo el ancho
+    disponible para que se puedan tocar cómodamente en el celular.
+También se agregaron estilos de foco visible, mensajes de error/éxito,
+botones de peligro para eliminar y un enlace para saltar al contenido.
+
+MODO PRODUCCIÓN (Clase 21)
+---------------------------
+config.php y config.ejemplo.php definen la constante APP_ENTORNO:
+  - 'desarrollo' (por defecto): muestra los errores en pantalla y habilita
+    admin.php.
+  - 'produccion': no muestra los errores al usuario (los guarda en el log de
+    PHP) y deja admin.php deshabilitado.
+En un servidor real hay que cambiar APP_ENTORNO a 'produccion' y no subir
+config.php al repositorio.
